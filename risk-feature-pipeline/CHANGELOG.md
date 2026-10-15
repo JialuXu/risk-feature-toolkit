@@ -18,6 +18,7 @@
 | B6 | trigger 宽表 CSV 默认**不再包含** `is_bad` / `企业规模` 等业务元信息列（避免与 `prepared.csv` merge 撞列）；需保留时传 `keep_metadata_cols=[...]` 或 CLI `--keep-metadata-cols` | `risk_trigger_extraction` |
 | B8 | export 完成时若存在 `稳定性等级=不稳定` 的规则，stdout 列出前 5 条（段-规则编号-有效重抽样次数），同时写入 `_audit.json` 的 `unstable_rules` 字段（D2 起字段为 `稳定性有效次数` + `评估口径`，原 `CV有效折数` 废弃） | `risk_export_report` / `risk_rule_mining` |
 | B10 | （留位，未实施）`risk_pipeline.paths.unified_results_dir(project, 'level2')` 已就位，后续将把 trigger 默认输出从 `output/<project>/` 切换到 `data/results/<project>/level2/`；届时旧路径仍向后兼容读取 | `risk_trigger_extraction` |
+| B11 | `prepare_df` 选列后对特征入池清单 `feature_cols` 过特征卫生闸（`risk_data_prep/scripts/feature_sanity.py`）：列名闸剔除资质前缀（`column_mapping.yaml` 的 `qualification.prefix`）之后仅剩纯是/否词的语义残缺哑变量；取值闸对二值(0/1)特征去重，与列序更靠前者完全相同或完全互补（x = 1 − y）的列剔除。剔除项向 stderr 打 `[提示]` 并逐列记原因 | `prepare` / `run` 的特征清单及其下游产物 |
 
 ## D 系列 — 统计口径（设计检视整改）
 
